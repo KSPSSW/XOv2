@@ -11,6 +11,6 @@ package com.mycompany.xov2;
 public class XOv2 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("Welcome to XO Game!!!!!");
     }
 }
