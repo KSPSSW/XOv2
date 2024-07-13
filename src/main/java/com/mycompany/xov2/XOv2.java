@@ -19,10 +19,10 @@ public class XOv2 {
             }
         }
         char player = 'X';
-        boolean gameover = false;
+        boolean gameOver = false;
         Scanner scanner = new Scanner(System.in);
 
-        while(!gameover){
+        while(!gameOver){
             printBoard(board);
             System.out.println(" ");
             System.out.print("Turn " + player + " Enter: ");
@@ -32,23 +32,23 @@ public class XOv2 {
             if (row <3 && row >= 0 && col <3 && col >= 0){   
                 if (board[row][col] =='_'){
                     board[row][col] = player;
-                    gameover = gamewin(board, player);
-                    if(gameover){
+                    gameOver = gameWin(board, player);
+                    if(gameOver){
                         System.out.println("Player " + player + " Win!!!! ");
                     }else{
                         // Draw!
-                        boolean gamedraw = true;
+                        boolean gameDraw = true;
                         for (row = 0;row < 3;row++){
                             for (col = 0;col < 3;col++){
                                 if (board[row][col] == '_'){
-                                    gamedraw = false;
+                                    gameDraw = false;
                                     break;
                                 }
                             }   
                         }
-                        if(gamedraw){
+                        if(gameDraw){
                             System.out.println("The game is Draw!!");
-                            gameover = true;
+                            gameOver = true;
                         }else{ 
                             // สลับคนเล่น
                             if(player == 'X'){
@@ -71,7 +71,7 @@ public class XOv2 {
         System.out.println("Welcome to XO Game!!!!");
     }
 
-    public static boolean gamewin (char[][] board , char player){
+    public static boolean gameWin (char[][] board , char player){
         // แถวแนวนอน
         for (int row = 0;row < 3;row++){
             if(board[row][0] == player && board[row][1] == player && board[row][2] == player){
