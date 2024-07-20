@@ -10,97 +10,121 @@ package com.mycompany.xov2;
  */
 public class XOv2 {
 
+     public static char[][] table = {{'-', '-', '-'}, {'-', '-', '-'}, {'-', '-', '-'}};
+    public static char turn = 'X';
+    public static Scanner sc = new Scanner(System.in);
+    public static int row;
+    public static int col;
+    public static int count = 0;
+
     public static void main(String[] args) {
         printWelcome();
-        char[][] board = new char[3][3];
-        for (int row = 1;row <= 3;row++){
-            for (int col = 1;col < 3;col++){
-                board[row][col] = '_';
+        while (true) {
+            showTable();
+            showTurn();
+            intpuRowCol();
+            if (isfinish()) {
+                showTable();
+                showPlayerWin();
+                break;
             }
+            turn = switchTurn(turn);
         }
-        char player = 'X';
-        boolean gameOver = false;
-        Scanner scanner = new Scanner(System.in);
+    }
 
-        while(!gameOver){
-            printBoard(board);
+    public static void printWelcome() {
+        System.out.println("Welcome to my XO Game");
+    }
+
+    public static void showTable() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                System.out.print(table[r][c] + " ");
+            }
             System.out.println(" ");
-            System.out.print("Turn " + player + " Enter: ");
-            int row = scanner.nextInt();
-            int col = scanner.nextInt();
-
-            if (row <3 && row >= 0 && col <3 && col >= 0){   
-                if (board[row][col] =='_'){
-                    board[row][col] = player;
-                    gameOver = gameWin(board, player);
-                    if(gameOver){
-                        System.out.println("Player " + player + " Win!!!! ");
-                    }else{
-                        // Draw!
-                        boolean gameDraw = true;
-                        for (row = 0;row < 3;row++){
-                            for (col = 0;col < 3;col++){
-                                if (board[row][col] == '_'){
-                                    gameDraw = false;
-                                    break;
-                                }
-                            }   
-                        }
-                        if(gameDraw){
-                            System.out.println("The game is Draw!!");
-                            gameOver = true;
-                        }else{ 
-                            // สลับคนเล่น
-                            if(player == 'X'){
-                                player = 'O';
-                            }else{
-                                player = 'X';
-                            }
-                        }
-                    }
-                }else{
-                    System.out.println("already taken");
-                }
-            }else{
-                System.out.println("Please enter numbers between 0-2 !!!!");
-            }
         }
-        printBoard(board);
-    }
-    public static void printWelcome(){
-        System.out.println("Welcome to XO Game!!!!");
     }
 
-    public static boolean gameWin (char[][] board , char player){
-        // แถวแนวนอน
-        for (int row = 0;row < 3;row++){
-            if(board[row][0] == player && board[row][1] == player && board[row][2] == player){
-                return true;
-            }
-        }
-
-        //แถวแนวตั้ง
-        for (int col = 0;col < 3;col++){
-            if(board[0][col] == player && board[1][col] == player && board[2][col] == player){
-                return true;
-            }
-        }
-
-        //แถวเอียงๆ
-            if(board[0][0] == player && board[1][1] == player && board[2][2] == player){
-                return true;
-            }
-            if(board[0][2] == player && board[1][1] == player && board[2][0] == player){
-                return true;
-            }
-            return false; 
+    public static void showTurn() {
+        System.out.println("Turn " + turn);
     }
-    public static void printBoard(char[][] board){
-        for (int row = 0;row < 3;row++){
-            for (int col = 0;col < 3;col++){
-                System.out.print(board[row][col]+ " ");
-            }
-            System.out.println();
-        }    
+
+    public static char switchTurn(char turn) {
+        if (turn == 'X') {
+            return 'O';
+        } else {
+            return 'X';
+        }
+    }
+
+    public static void intpuRowCol() {
+        System.out.print("please enter(row,col) : ");
+        row = sc.nextInt() - 1;
+        col = sc.nextInt() - 1;
+        table[row][col] = turn;
+        count++;
+    }
+
+    public static boolean isfinish() {
+        if (checkWin()) {
+            return true;
+        }
+        if (checkDraw()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkWin() {
+        if (checkRow(table, turn, row)) {
+            return true;
+        }
+        if (checkCol()) {
+            return true;
+        }
+        if (checkX()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkRow(char[][] table, char turn, int row) {
+        if (table[row][0] == turn && table[row][1] == turn && table[row][2] == turn) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkCol() {
+        if (table[0][col] == turn && table[1][col] == turn && table[2][col] == turn) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkX() {
+        if (table[0][2] == turn && table[1][1] == turn && table[2][0] == turn) {
+            return true;
+        }
+        if (table[2][2] == turn && table[1][1] == turn && table[0][0] == turn) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkDraw() {
+        if (count == 9) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void showPlayerWin() {
+        if (checkDraw()) {
+            System.out.println("Draw !!!");
+        }
+        if (checkWin()) {
+            System.out.println(turn + " Win!!!");
+        }
     }
 }
